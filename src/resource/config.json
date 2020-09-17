@@ -1,0 +1,16 @@
+{
+  "sources": [
+    {
+      "name": "source1",
+      "rtmpUrl": "rtmp://host.docker.internal/live/source1"
+    },
+    {
+      "name": "source2",
+      "rtmpUrl": "rtmp://host.docker.internal/live/source2"
+    }
+  ],
+  "output": {
+    "name": "output",
+    "rtmpUrl": "rtmp://host.docker.internal/live/output"
+  }
+}

@@ -1,0 +1,18 @@
+server rtmp://host.docker.internal/live/
+key output
+video_hw_decode false
+video_hw_encode false
+video_gpu_conversion false
+video_bitrate_kbps 800
+video_keyint_sec 1
+video_rate_control VBR
+video_width 640
+video_height 360
+video_fps_num 25
+video_fps_den 1
+audio_sample_rate 48000
+audio_bitrate_kbps 64
+preset ultrafast
+profile baseline
+tune zerolatency
+x264opts

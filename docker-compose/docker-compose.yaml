@@ -1,0 +1,38 @@
+version: "3.7"
+services:
+  nginx-rtmp:
+    image: tiangolo/nginx-rtmp:latest
+    ports:
+      - "1935:1935"
+  nginx-grpc-proxy:
+    image: hokaccha/grpc-web-proxy-nginx:latest
+    ports:
+      - '8080:8080'
+    command: /bin/sh -c "envsubst '$$NGINX_GRPC_PASS' < /etc/nginx/conf.d/grpc_proxy.conf.template > /etc/nginx/conf.d/grpc_proxy.conf && nginx -g 'daemon off;'"
+    environment:
+      NGINX_GRPC_PASS: "host.docker.internal:50051"
+  dummy-publisher:
+    image: registry.cn-beijing.aliyuncs.com/mengli/streaming-dummy-publisher:latest
+    restart: always
+    environment:
+      SOURCE_COUNT: 2
+      RESOLUTION: 320x180
+  obs-headless:
+    image: registry.cn-beijing.aliyuncs.com/mengli/obs-headless:latest
+    ports:
+      - '50051:50051'
+    volumes:
+      - "./obs-headless/config.txt:/config.txt"
+  rtmp-webrtc-adapter:
+    image: registry.cn-beijing.aliyuncs.com/mengli/rtmp-webrtc-adapter:latest
+    environment:
+      - RTC_MIN_PORT=30000
+      - RTC_MAX_PORT=30100
+      - RTC_LISTEN_IP=0.0.0.0
+      - RTC_ANNOUNCED_IP=127.0.0.1
+    ports:
+      - '8081:3000'
+      - '30000-30100:30000-30100/udp'
+      - '30000-30100:30000-30100/tcp'
+
+
